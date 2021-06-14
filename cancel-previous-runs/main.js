@@ -9,11 +9,6 @@ async function main() {
 
         const client = new GitHub(token)
 
-        // Parse event
-        const json = fs.readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: "utf-8" })
-        const event = JSON.parse(json)
-        const pull = event.push
-
         const repoWorkflowRuns = await client.actions.listWorkflowRunsForRepo({
             ...github.context.repo,
             branch: ref,
