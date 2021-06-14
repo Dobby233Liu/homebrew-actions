@@ -3,8 +3,12 @@ description: Search previous matching workflow runs and cancel them if needed
 inputs:
   token:
     description: GitHub token
-    required: false
-    default: ${{github.token}}
+    required: true
+    default: ${{ github.token }}
+  ref:
+    description: What ref to cancel for
+    required: true
+    default: ${{ github.ref }}
 runs:
   using: node12
   main: main.js
