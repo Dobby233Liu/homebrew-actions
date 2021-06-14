@@ -1,5 +1,5 @@
 const core = require('@actions/core')
-const GitHub = require('@actions/github').GitHub
+const github = require('@actions/github')
 const fs = require('fs')
 
 async function main() {
@@ -7,7 +7,7 @@ async function main() {
         const token = core.getInput("token", { required: true })
         const ref = core.getInput("ref", { required: true })
 
-        const client = new GitHub(token)
+        const client = new github.GitHub(token)
 
         const repoWorkflowRuns = await client.actions.listWorkflowRunsForRepo({
             ...github.context.repo,
