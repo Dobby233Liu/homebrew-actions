@@ -1,22 +1,23 @@
 const core = require('@actions/core')
-const github = require('@actions/github')
+const GitHub = require('@actions/github').GitHub
 const fs = require('fs')
 
 async function main() {
     try {
         const token = core.getInput("token", { required: true })
+        const ref = core.getInput("ref", { required: true })
 
-        const client = github.getOctokit(token)
+        const client = new GitHub(token)
 
         // Parse event
         const json = fs.readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: "utf-8" })
         const event = JSON.parse(json)
-        const pull = event.pull_request
+        const pull = event.push
 
         const repoWorkflowRuns = await client.actions.listWorkflowRunsForRepo({
             ...github.context.repo,
-            branch: pull.head.ref,
-            event: "pull_request",
+            branch: ref,
+            event: "push",
             status: "in_progress OR queued"
         })
 
